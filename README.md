@@ -28,7 +28,7 @@ $otherAlinq = $alinq->Instance($newArray);
 include('Alinq.php');
 
 $alinq = new Alinq($array);
-$result = $alinq->Select($newArray)->ToArray();
+$result = $alinq->Select(function($k, $v){ return $v['int']; })->ToArray();
 ```
 ## Alinq methods that will return object:
 
