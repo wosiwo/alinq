@@ -2,20 +2,20 @@
 
 /**
  *  A Array Linq for PHP -- plan to realize by using php extension
- *  模仿plinq,不使用SPL:RecursiveArrayIterator的linq实现
+ *  模仿Alinq,不使用SPL:RecursiveArrayIterator的linq实现
  *  @author onceme 
  */
 class Alinq{
 
-    const PLINQ_CLOSURE_RETURN_TYPE_BOOL = 'bool';
-    const PLINQ_CLOSURE_RETURN_TYPE_OBJECT = 'object';
-    const PLINQ_CLOSURE_RETURN_TYPE_ARRAY = 'array';
-    const PLINQ_ORDER_ASC = 'asc';
-    const PLINQ_ORDER_DESC = 'desc';
+    const Alinq_CLOSURE_RETURN_TYPE_OOL = 'bool';
+    const Alinq_CLOSURE_RETURN_TYPE_OBJECT = 'object';
+    const Alinq_CLOSURE_RETURN_TYPE_ARRAY = 'array';
+    const Alinq_ORDER_ASC = 'asc';
+    const Alinq_ORDER_DESC = 'desc';
     
-    const PLINQ_ORDER_TYPE_NUMERIC = 1;
-    const PLINQ_ORDER_TYPE_ALPHANUMERIC = 2;
-    const PLINQ_ORDER_TYPE_DATETIME = 3;
+    const Alinq_ORDER_TYPE_NUMERIC = 1;
+    const Alinq_ORDER_TYPE_ALPHANUMERIC = 2;
+    const Alinq_ORDER_TYPE_DATETIME = 3;
     private $dataSource;
 	/**
 	 *	初始化类时指定数组原[后期考虑缓存各个数组源，及其查询结果]
@@ -38,7 +38,7 @@ class Alinq{
      * 返回符合 $closure(闭包) 条件的第一个结果
      * 
      * @param ObjectClosure $closure    a closure that returns boolean.
-     * @return Plinq    The first item from this according $closure
+     * @return Alinq    The first item from this according $closure
      */
     public function Single($closure)
     {
@@ -52,7 +52,7 @@ class Alinq{
      * 根据 $closure(闭包) 生成的key对数组进行分组
      * 
      * @param ObjectClosure $closure    a closure that returns an item as key, item can be any type.
-     * @return Plinq
+     * @return Alinq
      */
     public function GroupBy($closure){
 
@@ -77,7 +77,7 @@ class Alinq{
      * 将给定的数组覆盖到数据源数组中
      * 
      * @param Array $array
-     * @return Plinq
+     * @return Alinq
      */
     public function Concat(Array $array)
     {    
@@ -92,14 +92,14 @@ class Alinq{
 
 
    /**
-     * Creates a new Plinq object from items which are a form of Array according to $closure 
+     * Creates a new Alinq object from items which are a form of Array according to $closure 
      * 打散二维数组  array("key"=>array("key_1"=>1,"key_2"=>2))  => array(0=>1,1=>2)
      * @param ObjectClosure $closure    a closure that returns an item that is a form of Array.
-     * @return Plinq
+     * @return Alinq
      */
     public function SelectMany($closure)
     {
-        $applicables = $this->GetApplicables($closure, 0, self::PLINQ_CLOSURE_RETURN_TYPE_OBJECT);
+        $applicables = $this->GetApplicables($closure, 0, self::Alinq_CLOSURE_RETURN_TYPE_OBJECT);
         $applicables = $applicables->ToArray();
         $many = array();
         
@@ -116,23 +116,23 @@ class Alinq{
     }
 
     /**
-     * Creates a new Plinq object from items that are determined by $closure 
+     * Creates a new Alinq object from items that are determined by $closure 
      * 
      * @param ObjectClosure $closure    a closure that returns an item to append, item can be any type.
-     * @return Plinq
+     * @return Alinq
      */
     public function Select($closure)
     {
-        return $this->GetApplicables($closure, 0, self::PLINQ_CLOSURE_RETURN_TYPE_OBJECT);
+        return $this->GetApplicables($closure, 0, self::Alinq_CLOSURE_RETURN_TYPE_OBJECT);
     }
      
 
      /**
-     * Plinq::Where() 
-     * Filters the Plinq object according to closure return result.
+     * Alinq::Where() 
+     * Filters the Alinq object according to closure return result.
      * 
      * @param ObjectClosure $closure     a closure that returns boolean
-     * @return Plinq    Filtered results according to $closure
+     * @return Alinq    Filtered results according to $closure
      */
     public function Where($closure)
     {         
@@ -140,11 +140,11 @@ class Alinq{
     }
     
     /**
-     * Plinq::Skip()
+     * Alinq::Skip()
      * Skips first $count item and returns remaining items
      * 
      * @param int $count    skip count
-     * @return Plinq
+     * @return Alinq
      */
     public function Skip($count)
     {
@@ -152,15 +152,15 @@ class Alinq{
     }
     
     /**
-     * Plinq::Take()
+     * Alinq::Take()
      * Takes first $count item and returns them
      * 
      * @param int $count    take count
-     * @return  Plinq
+     * @return  Alinq
      */
     public function Take($count)
     {
-        return $this->GetApplicables(function($k, $v){ return true; }, $count, self::PLINQ_CLOSURE_RETURN_TYPE_BOOL);
+        return $this->GetApplicables(function($k, $v){ return true; }, $count, self::Alinq_CLOSURE_RETURN_TYPE_BOOL);
     }
     
     /**
@@ -207,28 +207,28 @@ class Alinq{
         return (($averagable == 0)? 0 : ($resulTotal/$averagable)); 
     }
     
-    private function Order($closure, $direction = self::PLINQ_ORDER_ASC)
+    private function Order($closure, $direction = self::Alinq_ORDER_ASC)
     {
-        $applicables = $this->GetApplicables($closure, 0, self::PLINQ_CLOSURE_RETURN_TYPE_OBJECT);
+        $applicables = $this->GetApplicables($closure, 0, self::Alinq_CLOSURE_RETURN_TYPE_OBJECT);
 
-        $sortType = self::PLINQ_ORDER_TYPE_NUMERIC;
+        $sortType = self::Alinq_ORDER_TYPE_NUMERIC;
         if(is_a($applicables->ElementAt(0), 'DateTime'))
-            $sortType = self::PLINQ_ORDER_TYPE_DATETIME;
+            $sortType = self::Alinq_ORDER_TYPE_DATETIME;
         elseif(!is_numeric($applicables->ElementAt(0)))
-            $sortType = self::PLINQ_ORDER_TYPE_ALPHANUMERIC;
+            $sortType = self::Alinq_ORDER_TYPE_ALPHANUMERIC;
         
-        if($sortType == self::PLINQ_ORDER_TYPE_DATETIME)
+        if($sortType == self::Alinq_ORDER_TYPE_DATETIME)
         {
             $applicables = $applicables->Select(function($k, $v){ return $v->getTimeStamp(); });
-            $sortType = self::PLINQ_ORDER_TYPE_NUMERIC;
+            $sortType = self::Alinq_ORDER_TYPE_NUMERIC;
         }            
         $applicables = $applicables->ToArray();
 
 
-        if($direction == self::PLINQ_ORDER_ASC)
-            asort($applicables, (($sortType == self::PLINQ_ORDER_TYPE_NUMERIC)? SORT_NUMERIC : SORT_LOCALE_STRING));
+        if($direction == self::Alinq_ORDER_ASC)
+            asort($applicables, (($sortType == self::Alinq_ORDER_TYPE_NUMERIC)? SORT_NUMERIC : SORT_LOCALE_STRING));
         else
-            arsort($applicables, (($sortType == self::PLINQ_ORDER_TYPE_NUMERIC)? SORT_NUMERIC : SORT_LOCALE_STRING));
+            arsort($applicables, (($sortType == self::Alinq_ORDER_TYPE_NUMERIC)? SORT_NUMERIC : SORT_LOCALE_STRING));
 
         $ordered = array();
         foreach($applicables as $key => $value)
@@ -241,22 +241,22 @@ class Alinq{
      * Orders this objects items in ascending order according to the selected key in closure
      * 
      * @param ObjectClosure $closure    a closure that selects the order key, key can be anything
-     * @return Plinq    Ordered items
+     * @return Alinq    Ordered items
      */
     public function OrderBy($closure)
     {
-        return $this->Order($closure, self::PLINQ_ORDER_ASC);
+        return $this->Order($closure, self::Alinq_ORDER_ASC);
     }
     
     /**
      * Orders this objects items in descending order according to the selected key in closure
      * 
      * @param ObjectClosure $closure    a closure that selects the order key, key can be anything
-     * @return Plinq    Ordered items
+     * @return Alinq    Ordered items
      */
     public function OrderByDescending($closure)
     {
-        return $this->Order($closure, self::PLINQ_ORDER_DESC);
+        return $this->Order($closure, self::Alinq_ORDER_DESC);
     }    
     
     /**
@@ -317,7 +317,7 @@ class Alinq{
     /**
      * Returns distinct item values of this 
      * 
-     * @return Plinq    Distinct item values of this 
+     * @return Alinq    Distinct item values of this 
      */
     public function Distinct()
     {
@@ -328,11 +328,10 @@ class Alinq{
      * Intersects an Array with this
      * 
      * @param Array $array  Array to intersect
-     * @return Plinq    intersected items
+     * @return Alinq    intersected items
      */
     public function Intersect(Array $array)
     {
-        $this->rewind();
         return self::Instance(array_intersect((Array)$this, $array));
     }    
     
@@ -340,19 +339,18 @@ class Alinq{
      * Finds different items
      * 
      * @param Array $array
-     * @return  Plinq   Returns different items of this and $array
+     * @return  Alinq   Returns different items of this and $array
      */
     public function Diff(Array $array)
     {
-        $this->rewind();
         return self::Instance(array_diff($this->dataSource, $array));
     }
     
     /**
-     * Plinq::ElementAt()
+     * Alinq::ElementAt()
      * 
      * @param int $index
-     * @return  Object  Item at $index
+     * @return  array  Item at $index
      */
     public function ElementAt($index)
     {
@@ -361,9 +359,9 @@ class Alinq{
     }
 
     /**
-     * Plinq::First()
+     * Alinq::First()
      * 
-     * @return  Object  Item at index 0
+     * @return  array  Item at index 0
      */
     public function First()
     {
@@ -372,9 +370,9 @@ class Alinq{
     }
     
     /**
-     * Plinq::Last()
+     * Alinq::Last()
      * 
-     * @return  Object  Last item in this
+     * @return  array  Last item in this
      */
     public function Last()
     {
@@ -383,7 +381,7 @@ class Alinq{
 
 
     //根据条件筛选数组
-	private function GetApplicables($closure, $count = 0, $closureReturnType = self::PLINQ_CLOSURE_RETURN_TYPE_BOOL)
+	private function GetApplicables($closure, $count = 0, $closureReturnType = self::Alinq_CLOSURE_RETURN_TYPE_BOOL)
     {
         $applicables = array();
         
@@ -395,14 +393,14 @@ class Alinq{
             
             switch($closureReturnType)
             {   
-                case self::PLINQ_CLOSURE_RETURN_TYPE_BOOL:                    
+                case self::Alinq_CLOSURE_RETURN_TYPE_BOOL:                    
                     if(!is_bool(($returned = call_user_func_array($closure, array($storedKey, $stored)))) || !$returned)
                         continue;
                         
                     $applicables[$storedKey] = $stored;
                     $totalApplicable++;                                            
                 break;
-                case self::PLINQ_CLOSURE_RETURN_TYPE_OBJECT:
+                case self::Alinq_CLOSURE_RETURN_TYPE_OBJECT:
                     $applicables[$storedKey] = call_user_func_array($closure, array($storedKey, $stored));
                     $totalApplicable++;                        
                 break;    
@@ -419,7 +417,7 @@ class Alinq{
     /**
      * 返回结果集
      * 
-     * @return Array    Plinq as Array
+     * @return Array    Alinq as Array
      */
     public function ToArray(){
         return $this->dataSource;       //返回结果集
