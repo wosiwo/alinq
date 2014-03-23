@@ -16,7 +16,7 @@ include('Alinq.php');
 
 $alinq = new Alinq($array);
 $otherAlinq = $alinq->Instance($newArray);
-
+```
 *	Another difference is that  some result of the this library are objects which could not used as array . The result object should call it's ToArray method to get array result.
 	另外一个不同之处在与类库返回的结果,这个分支返回的对象结果不能直接作为数组使用,对象结果可以通过调用自身的ToArray方法来的到数组结果。
 	example:
@@ -25,7 +25,7 @@ include('Alinq.php');
 
 $alinq = new Alinq($array);
 $result = $alinq->Select($newArray)->ToArray();
-
+```
 ## Alinq methods that will return object:
 
 * `GroupBy()`
@@ -52,4 +52,4 @@ $result = $alinq->Select($newArray)->ToArray();
 ```php
 include('Alinq.php');
 
-
+```
