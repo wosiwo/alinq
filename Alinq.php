@@ -414,7 +414,7 @@ class Alinq{
     /*
      *  二维数组行列转换
      */
-    public function array2DInverse(){
+    public function Array2DInverse(){
             $precent = array();
             foreach($this->dataSource as $i=>$arr){
                     if(is_array($arr)){
@@ -433,7 +433,7 @@ class Alinq{
     /*
      *  二维数组添加列
      */
-    public function arrayAddColumn($add=array(),$fieldName=""){
+    public function ArrayAddColumn($add=array(),$fieldName=""){
         $array = array();
         foreach($this->dataSource as $k=>$row){
                 $array[$k][$fieldName]  = isset($add[$k])?$add[$k]:"";          
@@ -444,7 +444,7 @@ class Alinq{
     /*
      * 批量获取数组中的数据[获取某几列数据]
      */
-    public function getArrayColumns($keys){
+    public function GetArrayColumns($keys){
         $items = array();
         foreach ($this->dataSource as $row){
                 foreach ($row as $field=>$val){
@@ -458,7 +458,7 @@ class Alinq{
     }
 
     //获取某一列
-    public function getArrayColumn($key){
+    public function GetArrayColumn($key){
         $column = $this->getArrayColumns($this->dataSource, array($key));
         $column = $column->getArrayItem($key,array());
         return $column;
@@ -467,7 +467,7 @@ class Alinq{
     /**
      * 获取数组中的值
      */
-    public function getArrayItem($key, $default = 0){
+    public function GetArrayItem($key, $default = 0){
         $itemValue = isset($this->dataSource[$key])?$this->dataSource[$key]:$default;
         return $itemValue;
     }
