@@ -7,15 +7,15 @@
  */
 class Alinq{
 
-    const Alinq_CLOSURE_RETURN_TYPE_OOL = 'bool';
-    const Alinq_CLOSURE_RETURN_TYPE_OBJECT = 'object';
-    const Alinq_CLOSURE_RETURN_TYPE_ARRAY = 'array';
-    const Alinq_ORDER_ASC = 'asc';
-    const Alinq_ORDER_DESC = 'desc';
+    const ALINQ_CLOSURE_RETURN_TYPE_BOOL = 'bool';
+    const ALINQ_CLOSURE_RETURN_TYPE_OBJECT = 'object';
+    const ALINQ_CLOSURE_RETURN_TYPE_ARRAY = 'array';
+    const ALINQ_ORDER_ASC = 'asc';
+    const ALINQ_ORDER_DESC = 'desc';
     
-    const Alinq_ORDER_TYPE_NUMERIC = 1;
-    const Alinq_ORDER_TYPE_ALPHANUMERIC = 2;
-    const Alinq_ORDER_TYPE_DATETIME = 3;
+    const ALINQ_ORDER_TYPE_NUMERIC = 1;
+    const ALINQ_ORDER_TYPE_ALPHANUMERIC = 2;
+    const ALINQ_ORDER_TYPE_DATETIME = 3;
     private $dataSource;
 	/**
 	 *	初始化类时指定数组原[后期考虑缓存各个数组源，及其查询结果]
@@ -411,7 +411,66 @@ class Alinq{
     }
 
 
+    /*
+     *  二维数组行列转换
+     */
+    public function array2DInverse(){
+            $precent = array();
+            foreach($this->dataSource as $i=>$arr){
+                    if(is_array($arr)){
+                        foreach($arr as $j=>$v){
+                            $precent[$j][$i]=$array[$i][$j];
+                        }
+                    }else{
+                            $precent[0][$i]=$arr;
+                    }
+           
+        }
+        return self::Instance($precent);
+    }
 
+
+    /*
+     *  二维数组添加列
+     */
+    public function arrayAddColumn($add=array(),$fieldName=""){
+        $array = array();
+        foreach($this->dataSource as $k=>$row){
+                $array[$k][$fieldName]  = isset($add[$k])?$add[$k]:"";          
+        }       
+        return self::Instance($array);
+    }
+
+    /*
+     * 批量获取数组中的数据[获取某几列数据]
+     */
+    public function getArrayColumns($keys){
+        $items = array();
+        foreach ($this->dataSource as $row){
+                foreach ($row as $field=>$val){
+                        if(in_array($field, $keys)){
+                                $items[$field][] = $val;
+                        }
+                }
+        }
+
+        return self::Instance($items);
+    }
+
+    //获取某一列
+    public function getArrayColumn($key){
+        $column = $this->getArrayColumns($this->dataSource, array($key));
+        $column = $column->getArrayItem($key,array());
+        return $column;
+    }
+
+    /**
+     * 获取数组中的值
+     */
+    public function getArrayItem($key, $default = 0){
+        $itemValue = isset($this->dataSource[$key])?$this->dataSource[$key]:$default;
+        return $itemValue;
+    }
 
 
     /**
