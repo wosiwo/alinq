@@ -17,10 +17,10 @@ class Alinq{
     const ALINQ_ORDER_TYPE_ALPHANUMERIC = 2;
     const ALINQ_ORDER_TYPE_DATETIME = 3;
     private $dataSource;
-	/**
-	 *	初始化类时指定数组原[后期考虑缓存各个数组源，及其查询结果]
-	 */
-	public function __construct(Array &$dataSource = array())
+    /**
+     *  初始化类时指定数组原[后期考虑缓存各个数组源，及其查询结果]
+     */
+    public function __construct(Array &$dataSource = array())
     {
         $this->dataSource = $dataSource;     
     }
@@ -29,7 +29,7 @@ class Alinq{
      * 以传入数组实例化一个新的linq对象
      */
     public static function Instance(Array &$newDataSource = array()){
-    		return	new self($newDataSource);	//建立一个新的对象,便于于灵活的使用不同数组
+            return  new self($newDataSource);   //建立一个新的对象,便于于灵活的使用不同数组
     }
 
 
@@ -99,7 +99,7 @@ class Alinq{
      */
     public function SelectMany($closure)
     {
-        $applicables = $this->GetApplicables($closure, 0, self::Alinq_CLOSURE_RETURN_TYPE_OBJECT);
+        $applicables = $this->GetApplicables($closure, 0, self::ALINQ_CLOSURE_RETURN_TYPE_OBJECT);
         $applicables = $applicables->ToArray();
         $many = array();
         
@@ -123,7 +123,7 @@ class Alinq{
      */
     public function Select($closure)
     {
-        return $this->GetApplicables($closure, 0, self::Alinq_CLOSURE_RETURN_TYPE_OBJECT);
+        return $this->GetApplicables($closure, 0, self::ALINQ_CLOSURE_RETURN_TYPE_OBJECT);
     }
      
 
@@ -160,7 +160,7 @@ class Alinq{
      */
     public function Take($count)
     {
-        return $this->GetApplicables(function($k, $v){ return true; }, $count, self::Alinq_CLOSURE_RETURN_TYPE_BOOL);
+        return $this->GetApplicables(function($k, $v){ return true; }, $count, self::ALINQ_CLOSURE_RETURN_TYPE_BOOL);
     }
     
     /**
@@ -207,28 +207,28 @@ class Alinq{
         return (($averagable == 0)? 0 : ($resulTotal/$averagable)); 
     }
     
-    private function Order($closure, $direction = self::Alinq_ORDER_ASC)
+    private function Order($closure, $direction = self::ALINQ_ORDER_ASC)
     {
-        $applicables = $this->GetApplicables($closure, 0, self::Alinq_CLOSURE_RETURN_TYPE_OBJECT);
+        $applicables = $this->GetApplicables($closure, 0, self::ALINQ_CLOSURE_RETURN_TYPE_OBJECT);
 
-        $sortType = self::Alinq_ORDER_TYPE_NUMERIC;
+        $sortType = self::ALINQ_ORDER_TYPE_NUMERIC;
         if(is_a($applicables->ElementAt(0), 'DateTime'))
-            $sortType = self::Alinq_ORDER_TYPE_DATETIME;
+            $sortType = self::ALINQ_ORDER_TYPE_DATETIME;
         elseif(!is_numeric($applicables->ElementAt(0)))
-            $sortType = self::Alinq_ORDER_TYPE_ALPHANUMERIC;
+            $sortType = self::ALINQ_ORDER_TYPE_ALPHANUMERIC;
         
-        if($sortType == self::Alinq_ORDER_TYPE_DATETIME)
+        if($sortType == self::ALINQ_ORDER_TYPE_DATETIME)
         {
             $applicables = $applicables->Select(function($k, $v){ return $v->getTimeStamp(); });
-            $sortType = self::Alinq_ORDER_TYPE_NUMERIC;
+            $sortType = self::ALINQ_ORDER_TYPE_NUMERIC;
         }            
         $applicables = $applicables->ToArray();
 
 
-        if($direction == self::Alinq_ORDER_ASC)
-            asort($applicables, (($sortType == self::Alinq_ORDER_TYPE_NUMERIC)? SORT_NUMERIC : SORT_LOCALE_STRING));
+        if($direction == self::ALINQ_ORDER_ASC)
+            asort($applicables, (($sortType == self::ALINQ_ORDER_TYPE_NUMERIC)? SORT_NUMERIC : SORT_LOCALE_STRING));
         else
-            arsort($applicables, (($sortType == self::Alinq_ORDER_TYPE_NUMERIC)? SORT_NUMERIC : SORT_LOCALE_STRING));
+            arsort($applicables, (($sortType == self::ALINQ_ORDER_TYPE_NUMERIC)? SORT_NUMERIC : SORT_LOCALE_STRING));
 
         $ordered = array();
         foreach($applicables as $key => $value)
@@ -245,7 +245,7 @@ class Alinq{
      */
     public function OrderBy($closure)
     {
-        return $this->Order($closure, self::Alinq_ORDER_ASC);
+        return $this->Order($closure, self::ALINQ_ORDER_ASC);
     }
     
     /**
@@ -256,7 +256,7 @@ class Alinq{
      */
     public function OrderByDescending($closure)
     {
-        return $this->Order($closure, self::Alinq_ORDER_DESC);
+        return $this->Order($closure, self::ALINQ_ORDER_DESC);
     }    
     
     /**
@@ -381,7 +381,7 @@ class Alinq{
 
 
     //根据条件筛选数组
-	private function GetApplicables($closure, $count = 0, $closureReturnType = self::Alinq_CLOSURE_RETURN_TYPE_BOOL)
+    private function GetApplicables($closure, $count = 0, $closureReturnType = self::ALINQ_CLOSURE_RETURN_TYPE_BOOL)
     {
         $applicables = array();
         
@@ -393,14 +393,14 @@ class Alinq{
             
             switch($closureReturnType)
             {   
-                case self::Alinq_CLOSURE_RETURN_TYPE_BOOL:                    
+                case self::ALINQ_CLOSURE_RETURN_TYPE_BOOL:                    
                     if(!is_bool(($returned = call_user_func_array($closure, array($storedKey, $stored)))) || !$returned)
                         continue;
                         
                     $applicables[$storedKey] = $stored;
                     $totalApplicable++;                                            
                 break;
-                case self::Alinq_CLOSURE_RETURN_TYPE_OBJECT:
+                case self::ALINQ_CLOSURE_RETURN_TYPE_OBJECT:
                     $applicables[$storedKey] = call_user_func_array($closure, array($storedKey, $stored));
                     $totalApplicable++;                        
                 break;    

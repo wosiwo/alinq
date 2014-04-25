@@ -40,8 +40,8 @@ function TestGroupBy(&$testArray)
 {    
     $p = new Plinq($testArray);
     $result = $p->GroupBy(function($k, $v){ 
-    	return (date('Y-m',$v['date']->getTimeStamp()))->ToArray(); 
-    });
+    	return (date('Y-m',$v['date']->getTimeStamp())); 
+    })->ToArray();
 
     assert('array_key_exists("2012-06", $result)');
     assert('$result["2012-06"]["key_58"]["int"] == 58');     
