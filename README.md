@@ -1,7 +1,7 @@
 alinq
 =====
 
-a branche of the libarary Plinq(http://plinq.codeplex.com/license) which is a implementation of linq to array.<br/>
+a branche of the libarary Plinq(http://plinq.codeplex.com/license) which is a implementation of linq to array.  
 基于Plinq(http://plinq.codeplex.com/license) 修改的一个以linq方式操作数组的php类.
 ##The Purpose of Branche
 This branche of the libaray trying to implemente the same feature without using SPL RecursiveArrayIterator;<br/>
@@ -10,11 +10,11 @@ This branche of the libaray trying to implemente the same feature without using 
 ##Differences
 *	This branche add a new method Instance to Instance the Alinq class without using "new" keyword.
 	Sometimes it's usefull,like the libaray live on a framework.<br/>
-	Here giving a example:<br/>
+	Here giving a example: 
 	这个分支添加了一个新的方法：Instance,以传入的数组来实例化Alinq类，而不必使用new 关键字.<br/>
 	这在某些情况下还是有点用的,比如在框架代码中调用这个类的时候。<br/>
 	下面给出例子:
-```php
+```
 include('Alinq.php');
 
 $alinq = new Alinq($array);
@@ -32,6 +32,8 @@ $result = $alinq->Select(function($k, $v){ return $v['int']; })->ToArray();
 ```
 ## Alinq methods that will return object:
 
+* `Instance()`
+* `Single()`
 * `GroupBy()`
 * `Concat()`
 * `SelectMany()`
@@ -39,11 +41,22 @@ $result = $alinq->Select(function($k, $v){ return $v['int']; })->ToArray();
 * `Where()`
 * `Skip()`
 * `Take()`
+* `All()`
+* `Any()`
+* `Average()`
 * `OrderBy()`
 * `OrderByDescending()`
+* `Max()`
+* `Min()`
+* `count()`
 * `Distinct()`
 * `Intersect()`
 * `Diff()`
+* `ElementAt()`
+* `First()`
+* `Last()`
+* `Array2DInverse()`
+* `ToArray()`
 
 ## Requirements
 
@@ -51,9 +64,11 @@ $result = $alinq->Select(function($k, $v){ return $v['int']; })->ToArray();
 
 
 
-## Examples
+## Usage
 
 ```php
 include('Alinq.php');
+$p = new Plinq($testArray);
+$result = $p->Where(function($k, $v){ return ($v['int'] > 998); })->ToArray();
 
 ```
