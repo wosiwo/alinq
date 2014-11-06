@@ -182,7 +182,8 @@ class Alinq{
      */
     public function Any($closure)
     {
-        return ($this->Single($closure) !== null);
+        $result = $this->Single($closure);;
+        return  !empty($result);
     }
     
     /**
