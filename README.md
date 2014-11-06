@@ -72,3 +72,17 @@ $p = new Plinq($testArray);
 $result = $p->Where(function($k, $v){ return ($v['int'] > 998); })->ToArray();
 
 ```
+
+##Running tests
+install phpunit
+```bash
+wget https://phar.phpunit.de/phpunit.phar
+chmod +x phpunit.phar
+sudo mv phpunit.phar /usr/local/bin/phpunit
+```
+run phpunit
+```bash
+phpunit --verbose test/AlinqTest.php
+```
+
+
