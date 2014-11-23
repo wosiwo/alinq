@@ -1,5 +1,7 @@
 <?php
 include realpath(dirname(dirname(__FILE__))).'/Alinq.php';
+use onceme\Alinq as Alinq;
+
 
 class AlinqTest extends PHPUnit_Framework_TestCase
 {
