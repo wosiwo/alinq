@@ -1,5 +1,5 @@
 <?php
-include realpath(dirname(dirname(__FILE__))).'/Alinq.php';
+require realpath(dirname(dirname(__FILE__))).'/vendor/autoload.php';
 use onceme\Alinq as Alinq;
 
 
