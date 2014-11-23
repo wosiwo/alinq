@@ -1,6 +1,6 @@
 <?php
 require realpath(dirname(dirname(__FILE__))).'/vendor/autoload.php';
-use onceme\Alinq as Alinq;
+use Alinq\Alinq as Alinq;
 
 
 class AlinqTest extends PHPUnit_Framework_TestCase

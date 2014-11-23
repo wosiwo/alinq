@@ -1,10 +1,10 @@
 {
-    "name": "onceme/alinq",
+    "name": "wosiwo/alinq",
     "description": "a implementation of linq to array",
     "license": "New BSD",
     "authors": [
         {
-            "name": "onceme",
+            "name": "wosiwo",
             "email": "oncewosiwo@gmail.com"
         }
     ],
@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "onceme\\": "src/Alinq"
+            "Alinq\\": "src/Alinq"
         }
     } 
 }

@@ -1,5 +1,5 @@
 <?php
-namespace onceme;
+namespace Alinq;
 /**
  *  A Array Linq for PHP -- plan to realize by using php extension
  *  模仿Alinq,不使用SPL:RecursiveArrayIterator的linq实现
