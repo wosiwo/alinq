@@ -3,7 +3,7 @@
 
 if (file_exists(realpath(dirname(dirname(__FILE__))).'/vendor/autoload.php')) {
     require realpath(dirname(dirname(__FILE__))).'/vendor/autoload.php';
-} elseif(file_exists(realpath('../../../vendor/autoload.php') {
+} elseif(file_exists(realpath('../../../vendor/autoload.php'))) {
     require '../../../vendor/autoload.php';
 }
 use Alinq\Alinq as Alinq;
